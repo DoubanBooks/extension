@@ -14,6 +14,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       .catch(error => sendResponse({ success: false, error: error.message }));
     return true;
   }
+
+  if (request.action === 'fetchManyouPrice') {
+    fetchManyouPrice(request.isbn)
+      .then(data => sendResponse({ success: true, data }))
+      .catch(error => sendResponse({ success: false, error: error.message }));
+    return true;
+  }
 });
 
 async function fetchKongfzPrice(isbn, config) {
@@ -192,5 +199,80 @@ async function fetchTaoshuPrice(isbn) {
 
   } catch (error) {
     throw new Error(`获取淘书网价格失败: ${error.message}`);
+  }
+}
+
+// 漫悠悠旧书网价格查询
+async function fetchManyouPrice(isbn) {
+  const baseURL = 'https://apiv3.manyoujing.net/api/Product/SearchProduct';
+  const params = new URLSearchParams({
+    searchType: 'default',
+    searchMode: 'match',
+    hasStock: '0',
+    keyWord: isbn,
+    pageIndex: '1',
+    pageSize: '10'
+  });
+
+  const url = `${baseURL}?${params.toString()}`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9',
+        'Origin': 'https://www.manyoujing.net',
+        'Referer': 'https://www.manyoujing.net/',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP错误: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.code !== 200) {
+      throw new Error(data.msg || 'API返回错误');
+    }
+
+    const productList = data.data.productItemList;
+
+    // 过滤出ISBN完全匹配的商品
+    const matchedProducts = productList.filter(product => product.isbn === isbn);
+
+    if (!matchedProducts || matchedProducts.length === 0) {
+      throw new Error('未找到在售商品');
+    }
+
+    // 按价格排序，取最低价
+    const sortedProducts = [...matchedProducts].sort((a, b) => {
+      const priceA = parseFloat(a.mixSellPriceStr);
+      const priceB = parseFloat(b.mixSellPriceStr);
+      return priceA - priceB;
+    });
+
+    const cheapest = sortedProducts[0];
+    const totalCount = data.data.itemCount;
+
+    return {
+      isbn: isbn,
+      productId: cheapest.productId,
+      productName: cheapest.productName,
+      author: cheapest.author,
+      sellPrice: parseFloat(cheapest.sellPriceStr),
+      mixSellPrice: parseFloat(cheapest.mixSellPriceStr),
+      bookFee: parseFloat(cheapest.bookFeeStr),
+      originalPrice: parseFloat(cheapest.originalPriceStr),
+      inventory: cheapest.inventory,
+      totalCount: totalCount,
+      faceGrade: cheapest.priceFaceGrade,
+      faceGradeStr: cheapest.priceFaceGradeStr
+    };
+
+  } catch (error) {
+    throw new Error(`获取漫悠悠价格失败: ${error.message}`);
   }
 }

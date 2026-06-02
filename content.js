@@ -133,6 +133,28 @@
               </div>
             </div>
           </li>
+          <!-- 漫悠悠 -->
+          <li>
+            <div class="cell price-btn-wrapper">
+              <div class="vendor-name">
+                <a target="_blank" href="#" class="manyou-link">
+                  <span>漫悠悠</span>
+                </a>
+              </div>
+              <div class="cell impression_track_mod_buyinfo">
+                <div class="cell price-wrapper">
+                  <a target="_blank" href="#" class="manyou-link">
+                    <span class="buylink-price manyou-price">--</span>
+                  </a>
+                </div>
+                <div class="cell">
+                  <a href="#" target="_blank" class="buy-book-btn paper-book-btn manyou-link">
+                    <span>购买纸质书</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
         </ul>
         <p style="text-align: center; color: #999; font-size: 13px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eaeaea;">Powered by <a href="https://douban-books-plus.pages.dev/" target="_blank" class="footer-link">Douban Book ++</a></p>
       </div>
@@ -141,18 +163,23 @@
     // 插入到目标元素之前
     targetElement.parentNode.insertBefore(cardContainer, targetElement);
 
-    // 并行获取两个网站的价格
+    // 并行获取三个网站的价格
     Promise.all([
       fetchKongfzPriceViaBackground(isbn),
-      fetchTaoshuPriceViaBackground(isbn)
-    ]).then(([kongfzData, taoshuData]) => {
+      fetchTaoshuPriceViaBackground(isbn),
+      fetchManyouPriceViaBackground(isbn)
+    ]).then(([kongfzData, taoshuData, manyouData]) => {
       // 比较价格，标记最低价格
-      const kongfzPrice = kongfzData.avgPrice;
-      const taoshuPrice = taoshuData.salePrice;
-      const kongfzIsCheaper = kongfzPrice < taoshuPrice;
+      const prices = [
+        { name: 'kongfz', price: kongfzData.avgPrice },
+        { name: 'taoshu', price: taoshuData.salePrice },
+        { name: 'manyou', price: manyouData.mixSellPrice }
+      ];
+      const lowestPrice = Math.min(...prices.map(p => p.price));
       
-      updateKongfzCard(cardContainer, kongfzData, isbn, kongfzIsCheaper);
-      updateTaoshuCard(cardContainer, taoshuData, isbn, !kongfzIsCheaper);
+      updateKongfzCard(cardContainer, kongfzData, isbn, kongfzData.avgPrice === lowestPrice);
+      updateTaoshuCard(cardContainer, taoshuData, isbn, taoshuData.salePrice === lowestPrice);
+      updateManyouCard(cardContainer, manyouData, isbn, manyouData.mixSellPrice === lowestPrice);
     }).catch(error => {
       console.error('[豆瓣价格助手] 获取价格失败:', error);
     });
@@ -205,6 +232,29 @@
     });
   }
 
+  // 通过 Background Script 获取漫悠悠价格
+  async function fetchManyouPriceViaBackground(isbn) {
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage(
+        {
+          action: 'fetchManyouPrice',
+          isbn: isbn
+        },
+        response => {
+          if (chrome.runtime.lastError) {
+            reject(new Error(chrome.runtime.lastError.message));
+            return;
+          }
+          if (response && response.success) {
+            resolve(response.data);
+          } else {
+            reject(new Error(response?.error || '未知错误'));
+          }
+        }
+      );
+    });
+  }
+
   // 更新孔夫子卡片
   function updateKongfzCard(container, data, isbn, isCheapest) {
     const avgPriceYuan = data.avgPrice.toFixed(2);
@@ -236,6 +286,26 @@
 
     // 更新价格
     const priceSpan = container.querySelector('.taoshu-price');
+    if (priceSpan) {
+      priceSpan.textContent = `${salePriceYuan}元`;
+      // 如果是最低价格，添加红色样式
+      if (isCheapest) {
+        priceSpan.classList.add('lowest-price');
+      }
+    }
+  }
+
+  // 更新漫悠悠卡片
+  function updateManyouCard(container, data, isbn, isCheapest) {
+    const salePriceYuan = data.mixSellPrice.toFixed(2);
+    const searchUrl = `https://www.manyoujing.net/search?keyword=${isbn}`;
+
+    // 更新链接
+    const links = container.querySelectorAll('.manyou-link');
+    links.forEach(link => link.href = searchUrl);
+
+    // 更新价格
+    const priceSpan = container.querySelector('.manyou-price');
     if (priceSpan) {
       priceSpan.textContent = `${salePriceYuan}元`;
       // 如果是最低价格，添加红色样式
