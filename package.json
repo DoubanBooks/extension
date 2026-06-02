@@ -1,6 +1,6 @@
 {
   "name": "bookfish-extension",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "BookFish - Chrome extension for comparing used book prices on Douban",
   "scripts": {
     "release": "standard-version",

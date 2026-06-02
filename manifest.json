@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "豆瓣图书-查二手书价格",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "在豆瓣图书页面显示二手书比价信息（孔夫子、多抓鱼、漫游鲸等）",
   "icons": {
     "16": "images/icon16.png",
