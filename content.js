@@ -134,7 +134,7 @@
             </div>
           </li>
         </ul>
-        <p style="text-align: center; color: #999; font-size: 13px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eaeaea;">Powered by <a href="https://github.com/DoubanBooks" target="_blank" class="footer-link">Douban Book ++</a></p>
+        <p style="text-align: center; color: #999; font-size: 13px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eaeaea;">Powered by <a href="https://douban-books-plus.pages.dev/" target="_blank" class="footer-link">Douban Book ++</a></p>
       </div>
     `;
 
