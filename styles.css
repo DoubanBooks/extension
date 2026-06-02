@@ -1,0 +1,423 @@
+/* 豆瓣图书孔夫子价格助手 - 样式 */
+
+/* 孔夫子卡片容器 - 与豆瓣 buyinfo 样式一致 */
+.kongfz-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+/* 标题样式 - 与豆瓣 h2 完全一致 */
+.kongfz-price-card h2,
+.kongfz-wrapper h2,
+.kongfz-title {
+  color: rgb(11, 124, 42);
+  font-size: 15px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 22.5px;
+  margin: 0 0 12px 0;
+  padding: 0 0 5px 0;
+}
+
+.kongfz-price-card h2 span,
+.kongfz-wrapper h2 span,
+.kongfz-title span {
+  color: rgb(11, 124, 42);
+  font-size: 15px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 22.5px;
+  display: inline;
+}
+
+/* 价格卡片标题间距 */
+.price-card h2 {
+  margin-bottom: 12px;
+}
+
+/* 列表样式 - 与豆瓣 current-version-list 完全一致 */
+.kongfz-wrapper .current-version-list,
+.kongfz-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kongfz-wrapper .current-version-list li,
+.kongfz-list li {
+  margin: 0 0 8px 0;
+  padding: 0;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 8px;
+}
+
+.kongfz-wrapper .current-version-list li:last-child,
+.kongfz-list li:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* 价格卡片列表样式 - 移除多余横线 */
+.price-card .current-version-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.price-card .current-version-list li {
+  margin: 0 0 12px 0;
+  padding: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+  white-space: nowrap;
+}
+
+.price-card .current-version-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* 价格按钮包装器 */
+.kongfz-wrapper .price-btn-wrapper,
+.price-card .price-btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* 商家名称 */
+.kongfz-wrapper .vendor-name {
+  flex: 1;
+  width: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.kongfz-wrapper .vendor-name a {
+  color: #37a;
+  text-decoration: none;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+
+.kongfz-wrapper .vendor-name a:hover {
+  color: #fff;
+  background-color: #37a;
+}
+
+.kongfz-wrapper .vendor-name span {
+  font-size: 13px;
+}
+
+/* 价格卡片商家名称 */
+.price-card .vendor-name {
+  flex: 1;
+  width: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.price-card .vendor-name a {
+  color: #37a;
+  text-decoration: none;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+
+.price-card .vendor-name a:hover {
+  color: #fff;
+  background-color: #37a;
+}
+
+.price-card .vendor-name span {
+  font-size: 13px;
+}
+
+/* 价格包装器 */
+.kongfz-wrapper .price-wrapper,
+.price-card .price-wrapper {
+  display: inline-block;
+  margin-right: 12px;
+  white-space: nowrap;
+}
+
+.kongfz-wrapper .price-wrapper a,
+.price-card .price-wrapper a {
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* 价格样式 - 与豆瓣 buylink-price 一致 */
+.price-card .buylink-price,
+.kongfz-wrapper .buylink-price,
+.kongfz-price,
+.taoshu-price {
+  color: #666;
+  font-size: 13px;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+/* 最低价格样式 - 红色突出显示 */
+.price-card .lowest-price,
+.kongfz-price.lowest-price,
+.taoshu-price.lowest-price {
+  color: #e4393c;
+  font-weight: bold;
+}
+
+/* 价格链接hover样式 */
+.price-card .price-wrapper a:hover,
+.kongfz-wrapper .price-wrapper a:hover {
+  text-decoration: none;
+}
+
+.price-card .price-wrapper a:hover .buylink-price,
+.kongfz-wrapper .price-wrapper a:hover .buylink-price {
+  color: inherit;
+}
+
+/* 库存信息样式 */
+.price-card .stock-info {
+  width: 70px;
+  text-align: left;
+  font-size: 13px;
+  color: #999;
+  white-space: nowrap;
+  padding-left: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start;
+}
+
+/* 库存信息 cell */
+.price-card .cell.stock-info {
+  width: 70px;
+  text-align: left;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* cell 垂直居中 */
+.price-card .cell {
+  display: flex;
+  align-items: center;
+}
+
+/* impression_track_mod_buyinfo 垂直居中 */
+.price-card .impression_track_mod_buyinfo {
+  display: flex;
+  align-items: center;
+}
+
+.price-card .stock-text {
+  color: #999;
+  white-space: nowrap;
+  font-size: 13px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  line-height: 20px;
+}
+
+/* 购买按钮不换行 */
+.price-card .buy-book-btn,
+.price-card .paper-book-btn {
+  white-space: nowrap;
+}
+
+/* Footer 链接样式 */
+.price-card .footer-link {
+  color: #37a;
+  text-decoration: none;
+}
+
+.price-card .footer-link:hover {
+  color: #fff;
+  background-color: #37a;
+}
+
+/* 购买按钮 - 与豆瓣 paper-book-btn 一致 */
+.kongfz-wrapper .buy-book-btn,
+.kongfz-wrapper .paper-book-btn {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: #fff;
+  color: #37a;
+  text-decoration: none;
+  border: 1px solid #37a;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 1.4;
+  transition: all 0.2s;
+}
+
+.kongfz-wrapper .buy-book-btn:hover,
+.kongfz-wrapper .paper-book-btn:hover {
+  color: #fff;
+  background-color: #37a;
+}
+
+/* 详细信息区域 */
+.kongfz-price-detail {
+  margin-top: 12px;
+  padding: 10px 0 0 0;
+  border-top: 1px solid #eaeaea;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #666;
+}
+
+.kongfz-price-detail .pl {
+  color: #999;
+  margin-right: 5px;
+}
+
+/* 加载状态 */
+.kongfz-loading {
+  padding: 15px 0;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.kongfz-loading .loading-text::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  border: 2px solid #ddd;
+  border-top-color: #37a;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 错误状态 */
+.kongfz-error {
+  padding: 15px;
+  text-align: center;
+  color: #e4393c;
+  background-color: #fff5f5;
+  border-radius: 3px;
+  border: 1px solid #ffcdd2;
+  font-size: 13px;
+}
+
+/* 备用方案样式 - 独立卡片模式 */
+.kongfz-price-card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.kongfz-price-card .buyinfo-printed {
+  background-color: #f8f8f8;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.kongfz-price-card h2 {
+  color: #007722;
+  font-size: 15px;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.kongfz-price-card h2 span {
+  font-weight: bold;
+}
+
+.kongfz-price-card .current-version-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kongfz-price-card .current-version-list li {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+}
+
+.kongfz-price-card .price-btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kongfz-price-card .vendor-name {
+  flex: 1;
+}
+
+.kongfz-price-card .vendor-name a {
+  color: #37a;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.kongfz-price-card .vendor-name a:hover {
+  color: #fff;
+  background-color: #37a;
+}
+
+.kongfz-price-card .price-wrapper {
+  margin-right: 15px;
+}
+
+.kongfz-price-card .buylink-price {
+  color: #e4393c;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.kongfz-price-card .kongfz-price {
+  color: #ff6b35;
+}
+
+.kongfz-price-card .buy-book-btn {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #37a;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 3px;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+.kongfz-price-card .buy-book-btn:hover {
+  background-color: #2d8a6e;
+}
+
+.kongfz-price-card .kongfz-price-detail {
+  margin-top: 12px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #666;
+}
+
+.kongfz-price-card .kongfz-price-detail .pl {
+  color: #999;
+  margin-right: 5px;
+}

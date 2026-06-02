@@ -1,0 +1,18 @@
+{
+  "name": "bookfish-extension",
+  "version": "1.0.0",
+  "description": "BookFish - Chrome extension for comparing used book prices on Douban",
+  "scripts": {
+    "release": "standard-version",
+    "release:major": "standard-version --release-as major",
+    "release:minor": "standard-version --release-as minor",
+    "release:patch": "standard-version --release-as patch"
+  },
+  "devDependencies": {
+    "standard-version": "^9.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:DoubanBooks/extension.git"
+  }
+}
