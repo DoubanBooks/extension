@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "豆瓣图书孔夫子价格助手",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "在豆瓣图书页面显示孔夫子旧书网的平均价格",
   "permissions": [
     "activeTab"
