@@ -163,26 +163,60 @@
     // 插入到目标元素之前
     targetElement.parentNode.insertBefore(cardContainer, targetElement);
 
-    // 并行获取三个网站的价格
-    Promise.all([
-      fetchKongfzPriceViaBackground(isbn),
-      fetchTaoshuPriceViaBackground(isbn),
-      fetchManyouPriceViaBackground(isbn)
-    ]).then(([kongfzData, taoshuData, manyouData]) => {
-      // 比较价格，标记最低价格
-      const prices = [
-        { name: 'kongfz', price: kongfzData.avgPrice },
-        { name: 'taoshu', price: taoshuData.salePrice },
-        { name: 'manyou', price: manyouData.mixSellPrice }
-      ];
-      const lowestPrice = Math.min(...prices.map(p => p.price));
-      
-      updateKongfzCard(cardContainer, kongfzData, isbn, kongfzData.avgPrice === lowestPrice);
-      updateTaoshuCard(cardContainer, taoshuData, isbn, taoshuData.salePrice === lowestPrice);
-      updateManyouCard(cardContainer, manyouData, isbn, manyouData.mixSellPrice === lowestPrice);
-    }).catch(error => {
-      console.error('[豆瓣价格助手] 获取价格失败:', error);
+    // 单独获取每个网站的价格，避免一个失败影响其他
+    fetchKongfzPriceViaBackground(isbn)
+      .then(kongfzData => {
+        updateKongfzCard(cardContainer, kongfzData, isbn, false);
+        findAndMarkLowestPrice(cardContainer);
+      })
+      .catch(error => {
+        console.error('[豆瓣价格助手] 获取孔网价格失败:', error);
+      });
+
+    fetchTaoshuPriceViaBackground(isbn)
+      .then(taoshuData => {
+        updateTaoshuCard(cardContainer, taoshuData, isbn, false);
+        findAndMarkLowestPrice(cardContainer);
+      })
+      .catch(error => {
+        console.error('[豆瓣价格助手] 获取淘书网价格失败:', error);
+      });
+
+    fetchManyouPriceViaBackground(isbn)
+      .then(manyouData => {
+        updateManyouCard(cardContainer, manyouData, isbn, false);
+        findAndMarkLowestPrice(cardContainer);
+      })
+      .catch(error => {
+        console.error('[豆瓣价格助手] 获取漫悠悠价格失败:', error);
+      });
+  }
+
+  // 查找并标记最低价格
+  function findAndMarkLowestPrice(container) {
+    const priceElements = [
+      { selector: '.kongfz-price', getPrice: el => parseFloat(el.textContent) },
+      { selector: '.taoshu-price', getPrice: el => parseFloat(el.textContent) },
+      { selector: '.manyou-price', getPrice: el => parseFloat(el.textContent) }
+    ];
+
+    let lowestPrice = Infinity;
+    let lowestElement = null;
+
+    priceElements.forEach(item => {
+      const el = container.querySelector(item.selector);
+      if (el && el.textContent !== '--') {
+        const price = item.getPrice(el);
+        if (!isNaN(price) && price < lowestPrice) {
+          lowestPrice = price;
+          lowestElement = el;
+        }
+      }
     });
+
+    if (lowestElement) {
+      lowestElement.classList.add('lowest-price');
+    }
   }
 
   // 通过 Background Script 获取孔夫子价格
