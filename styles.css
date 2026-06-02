@@ -150,25 +150,142 @@
   white-space: nowrap;
 }
 
-/* 价格样式 - 与豆瓣 buylink-price 一致 */
+/* 价格样式 - 与平台名称颜色一致 */
 .price-card .buylink-price,
 .kongfz-wrapper .buylink-price,
 .kongfz-price,
 .taoshu-price,
-.manyou-price {
-  color: #666;
+.manyou-price,
+.xiaoguya-price,
+.duozhua-price {
+  color: #37a;
   font-size: 13px;
   font-weight: normal;
   text-decoration: none;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+/* 价格列 hover 效果 */
+.price-card .price-wrapper:hover .buylink-price,
+.price-card .price-wrapper:hover .kongfz-price,
+.price-card .price-wrapper:hover .taoshu-price,
+.price-card .price-wrapper:hover .manyou-price,
+.price-card .price-wrapper:hover .xiaoguya-price,
+.price-card .price-wrapper:hover .duozhua-price,
+.price-card .price-wrapper:hover .duozhua-price-link,
+.price-card .price-wrapper:hover .xiaoguya-price-text {
+  color: #fff;
+  background-color: #2d7a9e;
 }
 
 /* 最低价格样式 - 红色突出显示 */
 .price-card .lowest-price,
 .kongfz-price.lowest-price,
 .taoshu-price.lowest-price,
-.manyou-price.lowest-price {
+.manyou-price.lowest-price,
+.xiaoguya-price.lowest-price,
+.duozhua-price.lowest-price {
   color: #e4393c;
   font-weight: bold;
+}
+
+
+
+/* 小谷吖价格包装器 hover 效果 */
+.xiaoguya-price-wrapper:hover {
+  text-decoration: none;
+}
+
+/* 多抓鱼价格链接样式 */
+.duozhua-price-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 小谷吖价格文字样式 */
+.xiaoguya-price-text {
+  color: inherit;
+  cursor: pointer;
+}
+
+/* 小谷吖 hover 提示框 */
+.xiaoguya-tooltip {
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  z-index: 10000;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.xiaoguya-tooltip.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.xiaoguya-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: #333;
+}
+
+/* 二维码弹窗 */
+.qrcode-modal-overlay {
+  position: fixed;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.qrcode-modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 二维码弹窗内容 */
+.qrcode-modal-content {
+  padding: 8px;
+}
+
+/* 二维码容器 */
+.qrcode-container {
+  display: flex;
+  gap: 10px;
+}
+
+/* 单个二维码区域 */
+.qrcode-item {
+  text-align: center;
+}
+
+/* 二维码图片 */
+.qrcode-image {
+  width: 120px;
+  height: 120px;
+}
+
+/* 二维码标签 */
+.qrcode-label {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #666;
 }
 
 /* 价格链接hover样式 */

@@ -202,6 +202,50 @@
               </div>
             </div>
           </li>
+          <!-- 小谷吖 -->
+          <li>
+            <div class="cell price-btn-wrapper">
+              <div class="vendor-name">
+                <a href="#" class="xiaoguya-link" style="cursor: pointer;">
+                  <span>小谷吖</span>
+                </a>
+              </div>
+              <div class="cell impression_track_mod_buyinfo">
+                <div class="cell price-wrapper">
+                  <a href="#" class="xiaoguya-link xiaoguya-price-wrapper" style="cursor: pointer;">
+                    <span class="buylink-price xiaoguya-price" title="小谷吖价格需在小程序中查看">--</span>
+                  </a>
+                </div>
+                <div class="cell">
+                  <a href="#" class="buy-book-btn paper-book-btn xiaoguya-link" style="cursor: pointer;">
+                    <span>购买纸质书</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <!-- 多抓鱼 -->
+          <li>
+            <div class="cell price-btn-wrapper">
+              <div class="vendor-name">
+                <a href="#" class="duozhua-link" style="cursor: pointer;">
+                  <span>多抓鱼</span>
+                </a>
+              </div>
+              <div class="cell impression_track_mod_buyinfo">
+                <div class="cell price-wrapper">
+                  <a href="#" class="duozhua-link duozhua-price-wrapper" style="cursor: pointer;">
+                    <span class="buylink-price duozhua-price" title="多抓鱼价格需在小程序中查看">--</span>
+                  </a>
+                </div>
+                <div class="cell">
+                  <a href="#" class="buy-book-btn paper-book-btn duozhua-link" style="cursor: pointer;">
+                    <span>购买纸质书</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
         </ul>
         <p style="text-align: center; color: #999; font-size: 13px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eaeaea;">Powered by <a href="https://douban-books-plus.pages.dev/" target="_blank" class="footer-link">Douban Book ++</a></p>
       </div>
@@ -215,6 +259,8 @@
       })
       .catch(error => {
         console.error('[豆瓣价格助手] 获取孔网价格失败:', error);
+        const kongfzPrice = cardContainer.querySelector('.kongfz-price');
+        if (kongfzPrice) kongfzPrice.textContent = '-';
       });
 
     fetchTaoshuPriceViaBackground(isbn)
@@ -224,6 +270,8 @@
       })
       .catch(error => {
         console.error('[豆瓣价格助手] 获取淘书网价格失败:', error);
+        const taoshuPrice = cardContainer.querySelector('.taoshu-price');
+        if (taoshuPrice) taoshuPrice.textContent = '-';
       });
 
     fetchManyouPriceViaBackground(isbn)
@@ -232,8 +280,16 @@
         findAndMarkLowestPrice(cardContainer);
       })
       .catch(error => {
-        console.error('[豆瓣价格助手] 获取漫悠悠价格失败:', error);
+        console.error('[豆瓣价格助手] 获取漫游鲸价格失败:', error);
+        const manyouPrice = cardContainer.querySelector('.manyou-price');
+        if (manyouPrice) manyouPrice.textContent = '暂无数据';
       });
+    
+    // 初始化小谷吖卡片（设置价格提示）
+    initXiaoguyaCard(cardContainer);
+    
+    // 绑定小谷吖点击事件
+    bindXiaoguyaEvents(cardContainer, isbn);
     
     return cardContainer;
   }
@@ -322,6 +378,50 @@
               </div>
             </div>
           </li>
+          <!-- 小谷吖 -->
+          <li>
+            <div class="cell price-btn-wrapper">
+              <div class="vendor-name">
+                <a href="#" class="xiaoguya-link" style="cursor: pointer;">
+                  <span>小谷吖</span>
+                </a>
+              </div>
+              <div class="cell impression_track_mod_buyinfo">
+                <div class="cell price-wrapper">
+                  <a href="#" class="xiaoguya-link xiaoguya-price-wrapper" style="cursor: pointer;">
+                    <span class="buylink-price xiaoguya-price" title="小谷吖价格需在小程序中查看">--</span>
+                  </a>
+                </div>
+                <div class="cell">
+                  <a href="#" class="buy-book-btn paper-book-btn xiaoguya-link" style="cursor: pointer;">
+                    <span>购买纸质书</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <!-- 多抓鱼 -->
+          <li>
+            <div class="cell price-btn-wrapper">
+              <div class="vendor-name">
+                <a href="#" class="duozhua-link" style="cursor: pointer;">
+                  <span>多抓鱼</span>
+                </a>
+              </div>
+              <div class="cell impression_track_mod_buyinfo">
+                <div class="cell price-wrapper">
+                  <a href="#" class="duozhua-link duozhua-price-wrapper" style="cursor: pointer;">
+                    <span class="buylink-price duozhua-price" title="多抓鱼价格需在小程序中查看">--</span>
+                  </a>
+                </div>
+                <div class="cell">
+                  <a href="#" class="buy-book-btn paper-book-btn duozhua-link" style="cursor: pointer;">
+                    <span>购买纸质书</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
         </ul>
         <p style="text-align: center; color: #999; font-size: 13px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eaeaea;">Powered by <a href="https://douban-books-plus.pages.dev/" target="_blank" class="footer-link">Douban Book ++</a></p>
       </div>
@@ -354,16 +454,44 @@
         console.error('[豆瓣价格助手] 获取淘书网价格失败:', error);
       });
 
-    console.info('[豆瓣价格助手] 开始获取漫悠悠价格');
+    console.info('[豆瓣价格助手] 开始获取漫游鲸价格');
     fetchManyouPriceViaBackground(isbn)
       .then(manyouData => {
-        console.info('[豆瓣价格助手] 获取漫悠悠价格成功:', manyouData);
+        console.info('[豆瓣价格助手] 获取漫游鲸价格成功:', manyouData);
         updateManyouCard(cardContainer, manyouData, isbn, false);
         findAndMarkLowestPrice(cardContainer);
       })
       .catch(error => {
-        console.error('[豆瓣价格助手] 获取漫悠悠价格失败:', error);
+        console.warn('[豆瓣价格助手] 获取漫游鲸价格失败:', error);
+        const manyouPrice = cardContainer.querySelector('.manyou-price');
+        if (manyouPrice) manyouPrice.textContent = '暂无数据';
+        // 设置链接跳转到漫游鲸主页
+        const manyouLinks = cardContainer.querySelectorAll('.manyou-link');
+        manyouLinks.forEach(link => {
+          link.href = 'https://www.manyoujing.net/';
+          link.target = '_blank';
+        });
       });
+    
+    // 初始化小谷吖卡片（设置价格提示）
+    console.info('[豆瓣价格助手] insertPriceCardBefore - 初始化小谷吖卡片');
+    initXiaoguyaCard(cardContainer);
+    
+    // 绑定小谷吖点击事件
+    console.info('[豆瓣价格助手] insertPriceCardBefore - 绑定小谷吖事件');
+    bindXiaoguyaEvents(cardContainer, isbn);
+    
+    // 初始化多抓鱼卡片（设置价格提示）
+    console.info('[豆瓣价格助手] insertPriceCardBefore - 初始化多抓鱼卡片');
+    initDuozhuaCard(cardContainer, isbn);
+    
+    // 绑定多抓鱼点击事件
+    console.info('[豆瓣价格助手] insertPriceCardBefore - 绑定多抓鱼事件');
+    bindDuozhuaEvents(cardContainer, isbn);
+    
+    // 绑定漫游鲸平台名称 hover 事件
+    console.info('[豆瓣价格助手] insertPriceCardBefore - 绑定漫游鲸平台名称事件');
+    bindManyouVendorEvents(cardContainer);
   }
 
   // 查找并标记最低价格
@@ -449,7 +577,7 @@
     });
   }
 
-  // 通过 Background Script 获取漫悠悠价格
+  // 通过 Background Script 获取漫游鲸价格
   async function fetchManyouPriceViaBackground(isbn) {
     return new Promise((resolve, reject) => {
       chrome.runtime.sendMessage(
@@ -520,7 +648,7 @@
     return isInDOM;
   }
 
-  // 更新漫悠悠卡片
+  // 更新漫游鲸卡片
   function updateManyouCard(container, data, isbn, isCheapest) {
     console.info('[豆瓣价格助手] updateManyouCard - 开始更新漫游鲸卡片');
     console.info('[豆瓣价格助手] updateManyouCard - 容器:', container);
@@ -563,5 +691,406 @@
     }, 100);
     
     console.info('[豆瓣价格助手] updateManyouCard - 更新完成');
+  }
+
+  // 初始化小谷吖卡片
+  function initXiaoguyaCard(container) {
+    console.info('[豆瓣价格助手] initXiaoguyaCard - 初始化小谷吖卡片');
+    const priceSpan = container.querySelector('.xiaoguya-price');
+    if (priceSpan) {
+      priceSpan.innerHTML = '<span class="xiaoguya-price-text">扫码查看</span>';
+    }
+  }
+
+  // 初始化多抓鱼卡片
+  function initDuozhuaCard(container, isbn) {
+    console.info('[豆瓣价格助手] initDuozhuaCard - 初始化多抓鱼卡片');
+    
+    const searchUrl = `https://www.duozhuayu.com/search/book/${isbn}`;
+    
+    // 设置价格为点击查看，点击跳转
+    const priceSpan = container.querySelector('.duozhua-price');
+    if (priceSpan) {
+      priceSpan.innerHTML = `<a href="${searchUrl}" target="_blank" class="duozhua-price-link">点击查看</a>`;
+    }
+    
+    // 设置购买链接
+    const buyLinks = container.querySelectorAll('.duozhua-link');
+    buyLinks.forEach(link => {
+      link.href = searchUrl;
+      link.target = '_blank';
+    });
+  }
+
+  // 绑定小谷吖事件
+  function bindXiaoguyaEvents(container, isbn) {
+    console.info('[豆瓣价格助手] bindXiaoguyaEvents - 绑定小谷吖事件，ISBN:', isbn);
+    console.info('[豆瓣价格助手] bindXiaoguyaEvents - 容器:', container);
+    
+    // 查找小谷吖购买按钮
+    const buyButtons = container.querySelectorAll('.xiaoguya-link.paper-book-btn');
+    console.info('[豆瓣价格助手] bindXiaoguyaEvents - 找到 xiaoguya-link.paper-book-btn 数量:', buyButtons.length);
+    
+    // 为购买按钮绑定 hover 事件
+    buyButtons.forEach((button, index) => {
+      console.info('[豆瓣价格助手] bindXiaoguyaEvents - 绑定 hover 事件到第', index + 1, '个购买按钮');
+      button.addEventListener('mouseenter', (e) => {
+        e.preventDefault();
+        console.info('[豆瓣价格助手] hover 小谷吖购买按钮，目标:', e.target);
+        showXiaoguyaQrcodeModal(e.target, isbn);
+      });
+      button.addEventListener('mouseleave', (e) => {
+        console.info('[豆瓣价格助手] mouseleave 小谷吖购买按钮');
+        hideQrcodeModal();
+      });
+      // 阻止默认点击行为
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+      });
+    });
+    
+    // 查找小谷吖平台名称链接
+    const vendorLinks = container.querySelectorAll('.vendor-name .xiaoguya-link');
+    console.info('[豆瓣价格助手] bindXiaoguyaEvents - 找到 vendor-name .xiaoguya-link 数量:', vendorLinks.length);
+    
+    // 为平台名称绑定 hover 事件（也弹出二维码）
+    vendorLinks.forEach((link, index) => {
+      console.info('[豆瓣价格助手] bindXiaoguyaEvents - 绑定 hover 事件到第', index + 1, '个平台名称链接');
+      link.addEventListener('mouseenter', (e) => {
+        e.preventDefault();
+        console.info('[豆瓣价格助手] hover 小谷吖平台名称，目标:', e.target);
+        showXiaoguyaQrcodeModal(e.target, isbn);
+      });
+      link.addEventListener('mouseleave', (e) => {
+        console.info('[豆瓣价格助手] mouseleave 小谷吖平台名称');
+        hideQrcodeModal();
+      });
+      // 阻止默认点击行为
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+      });
+    });
+    
+    // 绑定价格区域的 hover 事件（弹出二维码）
+    const priceWrapper = container.querySelector('.xiaoguya-price-wrapper');
+    console.info('[豆瓣价格助手] bindXiaoguyaEvents - 找到 xiaoguya-price-wrapper:', priceWrapper);
+    
+    if (priceWrapper) {
+      priceWrapper.addEventListener('mouseenter', (e) => {
+        console.info('[豆瓣价格助手] hover 小谷吖价格区域，目标:', e.target);
+        showXiaoguyaQrcodeModal(e.target, isbn);
+      });
+      priceWrapper.addEventListener('mouseleave', (e) => {
+        console.info('[豆瓣价格助手] mouseleave 小谷吖价格区域');
+        hideQrcodeModal();
+      });
+      console.info('[豆瓣价格助手] bindXiaoguyaEvents - 已绑定价格区域 hover 事件（弹出二维码）');
+    } else {
+      console.warn('[豆瓣价格助手] bindXiaoguyaEvents - 未找到 xiaoguya-price-wrapper');
+    }
+  }
+
+  // 绑定多抓鱼事件
+  function bindDuozhuaEvents(container, isbn) {
+    console.info('[豆瓣价格助手] bindDuozhuaEvents - 绑定多抓鱼事件，ISBN:', isbn);
+    console.info('[豆瓣价格助手] bindDuozhuaEvents - 容器:', container);
+    
+    const searchUrl = `https://www.duozhuayu.com/search/book/${isbn}`;
+    
+    // 平台名称 hover 弹出二维码
+    const vendorLinks = container.querySelectorAll('.vendor-name .duozhua-link');
+    console.info('[豆瓣价格助手] bindDuozhuaEvents - 找到 vendor-name .duozhua-link 数量:', vendorLinks.length);
+    vendorLinks.forEach((link, index) => {
+      link.addEventListener('mouseenter', (e) => {
+        e.preventDefault();
+        console.info('[豆瓣价格助手] hover 多抓鱼平台名称，目标:', e.target);
+        showDuozhuaQrcodeModal(e.target, isbn);
+      });
+      link.addEventListener('mouseleave', (e) => {
+        console.info('[豆瓣价格助手] mouseleave 多抓鱼平台名称');
+        hideQrcodeModal();
+      });
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.open(searchUrl, '_blank');
+      });
+    });
+    
+    console.info('[豆瓣价格助手] bindDuozhuaEvents - 多抓鱼事件绑定完成');
+  }
+
+  // 绑定漫游鲸平台名称事件
+  function bindManyouVendorEvents(container) {
+    console.info('[豆瓣价格助手] bindManyouVendorEvents - 绑定漫游鲸平台名称事件');
+    
+    // 平台名称 hover 弹出二维码
+    const vendorLinks = container.querySelectorAll('.vendor-name .manyou-link');
+    console.info('[豆瓣价格助手] bindManyouVendorEvents - 找到 vendor-name .manyou-link 数量:', vendorLinks.length);
+    
+    vendorLinks.forEach((link, index) => {
+      const originalHref = link.href;
+      link.addEventListener('mouseenter', (e) => {
+        e.preventDefault();
+        console.info('[豆瓣价格助手] hover 漫游鲸平台名称，目标:', e.target);
+        showManyouQrcodeModal(e.target, null);
+      });
+      link.addEventListener('mouseleave', (e) => {
+        console.info('[豆瓣价格助手] mouseleave 漫游鲸平台名称');
+        hideQrcodeModal('manyou-qrcode-modal');
+      });
+      // 点击时跳转
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.open(originalHref, '_blank');
+      });
+    });
+    
+    console.info('[豆瓣价格助手] bindManyouVendorEvents - 漫游鲸事件绑定完成');
+  }
+
+  // 显示小谷吖提示框
+  function showXiaoguyaTooltip(e) {
+    console.info('[豆瓣价格助手] 显示小谷吖 hover 提示');
+    // 先移除已存在的 tooltip
+    hideXiaoguyaTooltip();
+    
+    const tooltip = document.createElement('div');
+    tooltip.className = 'xiaoguya-tooltip';
+    tooltip.id = 'xiaoguya-tooltip';
+    tooltip.textContent = '小谷吖价格需在小程序中查看';
+    
+    const rect = e.target.getBoundingClientRect();
+    tooltip.style.left = `${rect.left + rect.width / 2}px`;
+    tooltip.style.top = `${rect.bottom + 20}px`;
+    tooltip.style.transform = 'translateX(-50%)';
+    
+    document.body.appendChild(tooltip);
+    
+    // 触发动画
+    setTimeout(() => {
+      tooltip.classList.add('show');
+    }, 10);
+    
+    // 给 tooltip 本身添加 mouseleave 事件
+    tooltip.addEventListener('mouseleave', hideXiaoguyaTooltip);
+  }
+
+  // 隐藏小谷吖提示框
+  function hideXiaoguyaTooltip() {
+    console.info('[豆瓣价格助手] 隐藏小谷吖 hover 提示');
+    const tooltip = document.getElementById('xiaoguya-tooltip');
+    if (tooltip) {
+      tooltip.classList.remove('show');
+      setTimeout(() => {
+        tooltip.remove();
+      }, 200);
+    }
+  }
+
+  // 显示多抓鱼提示框
+  function showDuozhuaTooltip(e) {
+    console.info('[豆瓣价格助手] 显示多抓鱼 hover 提示');
+    // 先移除已存在的 tooltip
+    hideDuozhuaTooltip();
+    
+    const tooltip = document.createElement('div');
+    tooltip.className = 'xiaoguya-tooltip';
+    tooltip.id = 'duozhua-tooltip';
+    tooltip.textContent = '点击购买查看价格';
+    
+    const rect = e.target.getBoundingClientRect();
+    tooltip.style.left = `${rect.left + rect.width / 2}px`;
+    tooltip.style.top = `${rect.bottom + 20}px`;
+    tooltip.style.transform = 'translateX(-50%)';
+    
+    document.body.appendChild(tooltip);
+    
+    // 触发动画
+    setTimeout(() => {
+      tooltip.classList.add('show');
+    }, 10);
+    
+    // 给 tooltip 本身添加 mouseleave 事件
+    tooltip.addEventListener('mouseleave', hideDuozhuaTooltip);
+  }
+
+  // 隐藏多抓鱼提示框
+  function hideDuozhuaTooltip() {
+    console.info('[豆瓣价格助手] 隐藏多抓鱼 hover 提示');
+    const tooltip = document.getElementById('duozhua-tooltip');
+    if (tooltip) {
+      tooltip.classList.remove('show');
+      setTimeout(() => {
+        tooltip.remove();
+      }, 200);
+    }
+  }
+
+  // 创建小谷吖二维码弹窗
+  function createXiaoguyaQrcodeModal() {
+    console.info('[豆瓣价格助手] createXiaoguyaQrcodeModal - 创建小谷吖二维码弹窗');
+    const modal = document.createElement('div');
+    modal.className = 'qrcode-modal-overlay';
+    modal.id = 'xiaoguya-qrcode-modal';
+    
+    // 使用 chrome.runtime.getURL 获取正确的资源路径
+    const wechatQrcodeUrl = chrome.runtime.getURL('images/xiaoguya_wechat.png');
+    const alipayQrcodeUrl = chrome.runtime.getURL('images/xiaoguya_alipay.png');
+    console.info('[豆瓣价格助手] createXiaoguyaQrcodeModal - 微信二维码URL:', wechatQrcodeUrl);
+    console.info('[豆瓣价格助手] createXiaoguyaQrcodeModal - 支付宝二维码URL:', alipayQrcodeUrl);
+    
+    modal.innerHTML = `
+      <div class="qrcode-modal-content">
+        <div class="qrcode-container">
+          <div class="qrcode-item">
+            <img src="${wechatQrcodeUrl}" alt="微信" class="qrcode-image">
+            <div class="qrcode-label">微信</div>
+          </div>
+          <div class="qrcode-item">
+            <img src="${alipayQrcodeUrl}" alt="支付宝" class="qrcode-image">
+            <div class="qrcode-label">支付宝</div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    return modal;
+  }
+
+  // 创建多抓鱼二维码弹窗
+  function createDuozhuaQrcodeModal() {
+    console.info('[豆瓣价格助手] createDuozhuaQrcodeModal - 创建多抓鱼二维码弹窗');
+    const modal = document.createElement('div');
+    modal.className = 'qrcode-modal-overlay';
+    modal.id = 'duozhua-qrcode-modal';
+    
+    // 多抓鱼只有微信二维码
+    const wechatQrcodeUrl = chrome.runtime.getURL('images/duozhuayu_wechat.png');
+    console.info('[豆瓣价格助手] createDuozhuaQrcodeModal - 微信二维码URL:', wechatQrcodeUrl);
+    
+    modal.innerHTML = `
+      <div class="qrcode-modal-content">
+        <div class="qrcode-container">
+          <div class="qrcode-item">
+            <img src="${wechatQrcodeUrl}" alt="微信" class="qrcode-image">
+            <div class="qrcode-label">微信</div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    return modal;
+  }
+
+  // 创建漫游鲸二维码弹窗
+  function createManyouQrcodeModal() {
+    console.info('[豆瓣价格助手] createManyouQrcodeModal - 创建漫游鲸二维码弹窗');
+    const modal = document.createElement('div');
+    modal.className = 'qrcode-modal-overlay';
+    modal.id = 'manyou-qrcode-modal';
+    
+    // 漫游鲸二维码
+    const manyouQrcodeUrl = chrome.runtime.getURL('images/manyoujing_wechat.png');
+    console.info('[豆瓣价格助手] createManyouQrcodeModal - 漫游鲸二维码URL:', manyouQrcodeUrl);
+    
+    modal.innerHTML = `
+      <div class="qrcode-modal-content">
+        <div class="qrcode-container">
+          <div class="qrcode-item">
+            <img src="${manyouQrcodeUrl}" alt="漫游鲸" class="qrcode-image">
+            <div class="qrcode-label">漫游鲸</div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    return modal;
+  }
+
+  // 显示小谷吖二维码弹窗
+  function showXiaoguyaQrcodeModal(button, isbn) {
+    console.info('[豆瓣价格助手] showXiaoguyaQrcodeModal - 显示小谷吖二维码弹窗，ISBN:', isbn);
+    // 先隐藏多抓鱼弹窗
+    hideQrcodeModal('duozhua-qrcode-modal');
+    
+    let modal = document.getElementById('xiaoguya-qrcode-modal');
+    if (!modal) {
+      modal = createXiaoguyaQrcodeModal();
+      document.body.appendChild(modal);
+    }
+    
+    // 设置弹窗位置在按钮上方
+    if (button) {
+      const buttonRect = button.getBoundingClientRect();
+      modal.style.left = buttonRect.left + 'px';
+      modal.style.top = (buttonRect.top - 280) + 'px';
+      modal.style.position = 'fixed';
+    }
+    
+    modal.classList.add('show');
+  }
+
+  // 显示多抓鱼二维码弹窗
+  function showDuozhuaQrcodeModal(button, isbn) {
+    console.info('[豆瓣价格助手] showDuozhuaQrcodeModal - 显示多抓鱼二维码弹窗，ISBN:', isbn);
+    // 先隐藏小谷吖弹窗
+    hideQrcodeModal('xiaoguya-qrcode-modal');
+    
+    let modal = document.getElementById('duozhua-qrcode-modal');
+    if (!modal) {
+      modal = createDuozhuaQrcodeModal();
+      document.body.appendChild(modal);
+    }
+    
+    // 设置弹窗位置在按钮上方
+    if (button) {
+      const buttonRect = button.getBoundingClientRect();
+      modal.style.left = buttonRect.left + 'px';
+      modal.style.top = (buttonRect.top - 280) + 'px';
+      modal.style.position = 'fixed';
+    }
+    
+    modal.classList.add('show');
+  }
+
+  // 显示漫游鲸二维码弹窗
+  function showManyouQrcodeModal(button, isbn) {
+    console.info('[豆瓣价格助手] showManyouQrcodeModal - 显示漫游鲸二维码弹窗');
+    // 先隐藏其他弹窗
+    hideQrcodeModal('xiaoguya-qrcode-modal');
+    hideQrcodeModal('duozhua-qrcode-modal');
+    
+    let modal = document.getElementById('manyou-qrcode-modal');
+    if (!modal) {
+      modal = createManyouQrcodeModal();
+      document.body.appendChild(modal);
+    }
+    
+    // 设置弹窗位置在按钮上方
+    if (button) {
+      const buttonRect = button.getBoundingClientRect();
+      modal.style.left = buttonRect.left + 'px';
+      modal.style.top = (buttonRect.top - 280) + 'px';
+      modal.style.position = 'fixed';
+    }
+    
+    modal.classList.add('show');
+  }
+
+  // 隐藏二维码弹窗
+  function hideQrcodeModal(modalId = 'xiaoguya-qrcode-modal') {
+    console.info('[豆瓣价格助手] hideQrcodeModal - 隐藏二维码弹窗:', modalId);
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.classList.remove('show');
+    }
+    // 同时隐藏其他弹窗
+    const otherModalIds = ['xiaoguya-qrcode-modal', 'duozhua-qrcode-modal', 'manyou-qrcode-modal'].filter(id => id !== modalId);
+    otherModalIds.forEach(id => {
+      const otherModal = document.getElementById(id);
+      if (otherModal) {
+        otherModal.classList.remove('show');
+      }
+    });
   }
 })();

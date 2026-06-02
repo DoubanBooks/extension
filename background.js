@@ -214,7 +214,7 @@ async function fetchTaoshuPrice(isbn) {
   }
 }
 
-// 漫悠悠旧书网价格查询
+// 漫游鲸旧书网价格查询
 async function fetchManyouPrice(isbn) {
   const baseURL = 'https://apiv3.manyoujing.net/api/Product/SearchProduct';
   const params = new URLSearchParams({
@@ -228,8 +228,8 @@ async function fetchManyouPrice(isbn) {
 
   const url = `${baseURL}?${params.toString()}`;
 
-  console.log(`[漫悠悠旧书网] 开始查询 ISBN: ${isbn}`);
-  console.log(`[漫悠悠旧书网] 请求URL: ${url}`);
+  console.log(`[漫游鲸旧书网] 开始查询 ISBN: ${isbn}`);
+  console.log(`[漫游鲸旧书网] 请求URL: ${url}`);
 
   try {
     const response = await fetch(url, {
@@ -243,14 +243,14 @@ async function fetchManyouPrice(isbn) {
       }
     });
 
-    console.log(`[漫悠悠旧书网] HTTP状态码: ${response.status}`);
+    console.log(`[漫游鲸旧书网] HTTP状态码: ${response.status}`);
 
     if (!response.ok) {
       throw new Error(`HTTP错误: ${response.status}`);
     }
 
     const data = await response.json();
-    console.log(`[漫悠悠旧书网] 原始响应数据:`, JSON.stringify(data, null, 2));
+    console.log(`[漫游鲸旧书网] 原始响应数据:`, JSON.stringify(data, null, 2));
 
     if (data.code !== 200) {
       throw new Error(data.msg || 'API返回错误');
@@ -291,6 +291,6 @@ async function fetchManyouPrice(isbn) {
     };
 
   } catch (error) {
-    throw new Error(`获取漫悠悠价格失败: ${error.message}`);
+    throw new Error(`获取漫游鲸价格失败: ${error.message}`);
   }
 }
