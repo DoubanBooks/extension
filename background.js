@@ -39,6 +39,9 @@ async function fetchKongfzPrice(isbn, config) {
 
   const url = `${baseURL}?${params.toString()}`;
 
+  console.log(`[孔夫子旧书网] 开始查询 ISBN: ${isbn}`);
+  console.log(`[孔夫子旧书网] 请求URL: ${url}`);
+
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -50,11 +53,14 @@ async function fetchKongfzPrice(isbn, config) {
       }
     });
 
+    console.log(`[孔夫子旧书网] HTTP状态码: ${response.status}`);
+
     if (!response.ok) {
       throw new Error(`HTTP错误: ${response.status}`);
     }
 
     const data = await response.json();
+    console.log(`[孔夫子旧书网] 原始响应数据:`, JSON.stringify(data, null, 2));
 
     if (data.status !== 1) {
       throw new Error(data.message || 'API返回错误');
@@ -149,6 +155,9 @@ async function fetchTaoshuPrice(isbn) {
 
   const url = `${baseURL}?${params.toString()}`;
 
+  console.log(`[淘书网] 开始查询 ISBN: ${isbn}`);
+  console.log(`[淘书网] 请求URL: ${url}`);
+
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -162,11 +171,14 @@ async function fetchTaoshuPrice(isbn) {
       }
     });
 
+    console.log(`[淘书网] HTTP状态码: ${response.status}`);
+
     if (!response.ok) {
       throw new Error(`HTTP错误: ${response.status}`);
     }
 
     const data = await response.json();
+    console.log(`[淘书网] 原始响应数据:`, JSON.stringify(data, null, 2));
 
     if (data.resultCode !== 'OK') {
       throw new Error(data.resultDescription || 'API返回错误');
@@ -216,6 +228,9 @@ async function fetchManyouPrice(isbn) {
 
   const url = `${baseURL}?${params.toString()}`;
 
+  console.log(`[漫悠悠旧书网] 开始查询 ISBN: ${isbn}`);
+  console.log(`[漫悠悠旧书网] 请求URL: ${url}`);
+
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -228,11 +243,14 @@ async function fetchManyouPrice(isbn) {
       }
     });
 
+    console.log(`[漫悠悠旧书网] HTTP状态码: ${response.status}`);
+
     if (!response.ok) {
       throw new Error(`HTTP错误: ${response.status}`);
     }
 
     const data = await response.json();
+    console.log(`[漫悠悠旧书网] 原始响应数据:`, JSON.stringify(data, null, 2));
 
     if (data.code !== 200) {
       throw new Error(data.msg || 'API返回错误');

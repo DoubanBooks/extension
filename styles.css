@@ -154,7 +154,8 @@
 .price-card .buylink-price,
 .kongfz-wrapper .buylink-price,
 .kongfz-price,
-.taoshu-price {
+.taoshu-price,
+.manyou-price {
   color: #666;
   font-size: 13px;
   font-weight: normal;
@@ -164,7 +165,8 @@
 /* 最低价格样式 - 红色突出显示 */
 .price-card .lowest-price,
 .kongfz-price.lowest-price,
-.taoshu-price.lowest-price {
+.taoshu-price.lowest-price,
+.manyou-price.lowest-price {
   color: #e4393c;
   font-weight: bold;
 }

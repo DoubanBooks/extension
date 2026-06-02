@@ -8,7 +8,9 @@
   ],
   "host_permissions": [
     "https://book.douban.com/*",
-    "https://search.kongfz.com/*"
+    "https://search.kongfz.com/*",
+    "https://api.taoshu.com/*",
+    "https://apiv3.manyoujing.net/*"
   ],
   "background": {
     "service_worker": "background.js"
