@@ -58,10 +58,10 @@ jobs:
 
             ## Download
 
-            - [bookfish-extension.zip](https://github.com/DoubanBooks/extension/releases/download/v${{ env.VERSION }}/bookfish-extension.zip)
+            - [DoubanBooksPlusPlus.zip](https://github.com/DoubanBooks/extension/releases/download/v${{ env.VERSION }}/DoubanBooksPlusPlus.zip)
 
       - name: Zip extension
-        run: zip -r bookfish-extension.zip . -x "*.git*" "node_modules/*" ".github/*"
+        run: zip -r DoubanBooksPlusPlus.zip . -x "*.git*" "node_modules/*" ".github/*"
 
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
@@ -69,6 +69,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bookfish-extension.zip
-          asset_name: bookfish-extension.zip
+          asset_path: ./DoubanBooksPlusPlus.zip
+          asset_name: DoubanBooksPlusPlus.zip
           asset_content_type: application/zip
