@@ -1,4 +1,4 @@
-// 豆瓣图书孔夫子价格助手 - Background Service Worker
+// 豆瓣图书-查二手书价格 - Background Service Worker
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'fetchKongfzPrice') {
