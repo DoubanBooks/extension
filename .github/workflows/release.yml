@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   release:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -34,7 +35,7 @@ jobs:
       - name: Bump version and generate changelog
         id: release
         run: |
-          npx standard-version --no-verify
+          npx standard-version --no-verify --commitmsg "chore(release): v%s [skip ci]"
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
