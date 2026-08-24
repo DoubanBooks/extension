@@ -6,10 +6,14 @@
     "release": "standard-version",
     "release:major": "standard-version --release-as major",
     "release:minor": "standard-version --release-as minor",
-    "release:patch": "standard-version --release-as patch"
+    "release:patch": "standard-version --release-as patch",
+    "pack:chrome": "zip -r -X ../bookfish-chrome.zip . -x \"*.git*\" -x \"node_modules/*\" -x \"*.DS_Store\" -x \"scripts/*\" -x \"*.py\"",
+    "pack:firefox": "web-ext build --source-dir=./ --artifacts-dir=../dist-firefox --overwrite-dest",
+    "lint:firefox": "web-ext lint --source-dir=./"
   },
   "devDependencies": {
-    "standard-version": "^9.5.0"
+    "standard-version": "^9.5.0",
+    "web-ext": "^7.12.0"
   },
   "repository": {
     "type": "git",

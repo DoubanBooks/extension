@@ -4,9 +4,11 @@
   'use strict';
 
   // 配置参数
+  // 孔夫子价格：跳过最低价（skipLowest）后，取接下来 sampleCount 条计算均值；
+  // skipLowest=1、sampleCount=2 → 取第 2、第 3 条结果的平均值。
   const CONFIG = {
     quality: '90~',
-    sampleCount: 5,
+    sampleCount: 2,
     skipLowest: 1
   };
 

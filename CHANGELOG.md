@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [Unreleased]
+
+#### Features
+* **Firefox 适配**：`manifest.json` 新增 `browser_specific_settings.gecko`（Firefox 发布必需，Chrome 会自动忽略），固定扩展 ID 为 `timeror@qq.com`，`strict_min_version` 设为 `109.0`。插件本身已采用 Manifest V3 及 `chrome.*` 兼容 API，Firefox 109+ 可直接上架，无需改动业务代码。
+* **构建/发布脚本**：`package.json` 新增 `pack:firefox`（`web-ext build`）与 `lint:firefox`（`web-ext lint`）脚本，并加入 `web-ext` 开发依赖，便于本地打包与 AMO 上架前自检。
+
+#### Bug Fixes
+* **孔夫子价格取价逻辑**：调整 `fetchKongfzPrice` 的均价计算方式——在按价格升序排序后，跳过最低价（`skipLowest`，默认 1 条），再取其后 `sampleCount`（本次设为 2）条结果求平均，即取**第 2、第 3 条结果的平均值**作为最终价格。修复此前取价可能受异常最低价干扰的问题；返回数据中恢复 `sampleCount` / `skipLowest` 字段以便追溯取样范围。`content.js` 的 `CONFIG` 同步将 `sampleCount` 调整为 `2`、`skipLowest` 保持 `1`。
+
 ### [1.0.9](https://github.com/DoubanBooks/extension/compare/v1.0.8...v1.0.9) (2026-06-02)
 
 ### [1.0.8](https://github.com/DoubanBooks/extension/compare/v1.0.7...v1.0.8) (2026-06-02)

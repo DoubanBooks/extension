@@ -94,11 +94,12 @@ async function fetchKongfzPrice(isbn, config) {
       };
     });
 
-    // 跳过最低价
+    // 按价格升序排序，使「第 N 条结果」稳定可预期
     const sortedPrices = [...priceList].sort((a, b) => a.price - b.price);
-    const filteredPrices = sortedPrices.slice(config.skipLowest);
 
-    // 取样计算平均价
+    // 跳过最低价（skipLowest）后，取接下来的 sampleCount 条结果计算均值
+    // 默认 skipLowest=1、sampleCount=2 → 取第 2、第 3 条结果的平均值
+    const filteredPrices = sortedPrices.slice(config.skipLowest);
     const sampleSize = Math.min(config.sampleCount, filteredPrices.length);
     if (sampleSize === 0) {
       throw new Error('有效样本数量不足');
