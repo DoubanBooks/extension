@@ -51,6 +51,7 @@
       "strict_min_version": "109.0",
       "data_collection_permissions": {
         "data_collection": true,
+        "required": [],
         "extensions_tos_url": "https://douban-books-plus.pages.dev/privacy.html",
         "extensions_privacy_policy_url": "https://douban-books-plus.pages.dev/privacy.html"
       }
