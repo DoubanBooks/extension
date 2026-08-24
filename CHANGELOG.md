@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 #### Bug Fixes
 * **孔夫子价格取价逻辑**：调整 `fetchKongfzPrice` 的均价计算方式——在按价格升序排序后，跳过最低价（`skipLowest`，默认 1 条），再取其后 `sampleCount`（本次设为 2）条结果求平均，即取**第 2、第 3 条结果的平均值**作为最终价格。修复此前取价可能受异常最低价干扰的问题；返回数据中恢复 `sampleCount` / `skipLowest` 字段以便追溯取样范围。`content.js` 的 `CONFIG` 同步将 `sampleCount` 调整为 `2`、`skipLowest` 保持 `1`。
+* **Firefox 上架校验修复（data_collection_permissions）**：`manifest.json` 的 `browser_specific_settings.gecko` 新增 `data_collection_permissions`（`data_collection: true`，并声明 `extensions_tos_url` / `extensions_privacy_policy_url`）。原因：AMO 对所有新 Firefox 扩展强制要求该字段；插件将用户浏览的书的 ISBN 发往第三方书商 API 查价，属于向第三方传输数据，故如实声明。注意：两个 URL 当前为占位（`douban-books-plus.pages.dev/privacy.html`），需替换为真实可访问的隐私政策页面以满足人工审核。
 * **Firefox 上架校验修复**：
   - `manifest.json` 的 `background` 由 `service_worker` 改为 `scripts: ["background.js"]`。原因：Firefox MV3 的 addons-linter 不支持 `background.service_worker` 字段（报 `MANIFEST_FIELD_UNSUPPORTED` 硬错），而 Chrome MV3 同样接受 `background.scripts`，故改为双平台通用写法。
   - `content.js` 中 4 处 `innerHTML` 模板拼接（多抓鱼价格链接、小谷吖/多抓鱼/漫游鲸二维码弹窗）改为 `document.createElement` + `textContent`/`setAttribute` 的安全构造，消除 `UNSAFE_VAR_ASSIGNMENT` 警告。本地 `web-ext lint` 现已 `errors/warnings/notices` 全为 0。
