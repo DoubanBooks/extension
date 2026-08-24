@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 #### Bug Fixes
 * **孔夫子价格取价逻辑**：调整 `fetchKongfzPrice` 的均价计算方式——在按价格升序排序后，跳过最低价（`skipLowest`，默认 1 条），再取其后 `sampleCount`（本次设为 2）条结果求平均，即取**第 2、第 3 条结果的平均值**作为最终价格。修复此前取价可能受异常最低价干扰的问题；返回数据中恢复 `sampleCount` / `skipLowest` 字段以便追溯取样范围。`content.js` 的 `CONFIG` 同步将 `sampleCount` 调整为 `2`、`skipLowest` 保持 `1`。
+* **Firefox 上架校验修复**：
+  - `manifest.json` 的 `background` 由 `service_worker` 改为 `scripts: ["background.js"]`。原因：Firefox MV3 的 addons-linter 不支持 `background.service_worker` 字段（报 `MANIFEST_FIELD_UNSUPPORTED` 硬错），而 Chrome MV3 同样接受 `background.scripts`，故改为双平台通用写法。
+  - `content.js` 中 4 处 `innerHTML` 模板拼接（多抓鱼价格链接、小谷吖/多抓鱼/漫游鲸二维码弹窗）改为 `document.createElement` + `textContent`/`setAttribute` 的安全构造，消除 `UNSAFE_VAR_ASSIGNMENT` 警告。本地 `web-ext lint` 现已 `errors/warnings/notices` 全为 0。
 
 ### [1.0.9](https://github.com/DoubanBooks/extension/compare/v1.0.8...v1.0.9) (2026-06-02)
 

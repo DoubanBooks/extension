@@ -19,7 +19,7 @@
     "https://apiv3.manyoujing.net/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {

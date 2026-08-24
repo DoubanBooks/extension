@@ -713,7 +713,13 @@
     // 设置价格为点击查看，点击跳转
     const priceSpan = container.querySelector('.duozhua-price');
     if (priceSpan) {
-      priceSpan.innerHTML = `<a href="${searchUrl}" target="_blank" class="duozhua-price-link">点击查看</a>`;
+      const link = document.createElement('a');
+      link.href = searchUrl;
+      link.target = '_blank';
+      link.className = 'duozhua-price-link';
+      link.textContent = '点击查看';
+      priceSpan.textContent = '';
+      priceSpan.appendChild(link);
     }
     
     // 设置购买链接
@@ -928,6 +934,35 @@
     }
   }
 
+  // 安全构造二维码弹窗内容（使用 createElement，避免 innerHTML 注入警告）
+  function buildQrcodeContent(items) {
+    const content = document.createElement('div');
+    content.className = 'qrcode-modal-content';
+    const container = document.createElement('div');
+    container.className = 'qrcode-container';
+
+    items.forEach(item => {
+      const itemEl = document.createElement('div');
+      itemEl.className = 'qrcode-item';
+
+      const img = document.createElement('img');
+      img.src = item.url;          // 来自 chrome.runtime.getURL，受控资源路径
+      img.alt = item.label;
+      img.className = 'qrcode-image';
+
+      const label = document.createElement('div');
+      label.className = 'qrcode-label';
+      label.textContent = item.label;
+
+      itemEl.appendChild(img);
+      itemEl.appendChild(label);
+      container.appendChild(itemEl);
+    });
+
+    content.appendChild(container);
+    return content;
+  }
+
   // 创建小谷吖二维码弹窗
   function createXiaoguyaQrcodeModal() {
     console.info('[豆瓣价格助手] createXiaoguyaQrcodeModal - 创建小谷吖二维码弹窗');
@@ -941,21 +976,11 @@
     console.info('[豆瓣价格助手] createXiaoguyaQrcodeModal - 微信二维码URL:', wechatQrcodeUrl);
     console.info('[豆瓣价格助手] createXiaoguyaQrcodeModal - 支付宝二维码URL:', alipayQrcodeUrl);
     
-    modal.innerHTML = `
-      <div class="qrcode-modal-content">
-        <div class="qrcode-container">
-          <div class="qrcode-item">
-            <img src="${wechatQrcodeUrl}" alt="微信" class="qrcode-image">
-            <div class="qrcode-label">微信</div>
-          </div>
-          <div class="qrcode-item">
-            <img src="${alipayQrcodeUrl}" alt="支付宝" class="qrcode-image">
-            <div class="qrcode-label">支付宝</div>
-          </div>
-        </div>
-      </div>
-    `;
-    
+    modal.appendChild(buildQrcodeContent([
+      { url: wechatQrcodeUrl, label: '微信' },
+      { url: alipayQrcodeUrl, label: '支付宝' }
+    ]));
+
     return modal;
   }
 
@@ -970,17 +995,10 @@
     const wechatQrcodeUrl = chrome.runtime.getURL('images/duozhuayu_wechat.png');
     console.info('[豆瓣价格助手] createDuozhuaQrcodeModal - 微信二维码URL:', wechatQrcodeUrl);
     
-    modal.innerHTML = `
-      <div class="qrcode-modal-content">
-        <div class="qrcode-container">
-          <div class="qrcode-item">
-            <img src="${wechatQrcodeUrl}" alt="微信" class="qrcode-image">
-            <div class="qrcode-label">微信</div>
-          </div>
-        </div>
-      </div>
-    `;
-    
+    modal.appendChild(buildQrcodeContent([
+      { url: wechatQrcodeUrl, label: '微信' }
+    ]));
+
     return modal;
   }
 
@@ -995,17 +1013,10 @@
     const manyouQrcodeUrl = chrome.runtime.getURL('images/manyoujing_wechat.png');
     console.info('[豆瓣价格助手] createManyouQrcodeModal - 漫游鲸二维码URL:', manyouQrcodeUrl);
     
-    modal.innerHTML = `
-      <div class="qrcode-modal-content">
-        <div class="qrcode-container">
-          <div class="qrcode-item">
-            <img src="${manyouQrcodeUrl}" alt="漫游鲸" class="qrcode-image">
-            <div class="qrcode-label">漫游鲸</div>
-          </div>
-        </div>
-      </div>
-    `;
-    
+    modal.appendChild(buildQrcodeContent([
+      { url: manyouQrcodeUrl, label: '漫游鲸' }
+    ]));
+
     return modal;
   }
 
